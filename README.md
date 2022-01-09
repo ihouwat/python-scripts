@@ -1,0 +1,2 @@
+- autoresp.py: clipboard copier
+- mcb.pyw: multi-clipboard copier and saver
