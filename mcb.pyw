@@ -3,8 +3,8 @@
 
 # Usage: py.exe mcb.pyw save <heyword> - Saves keyword to clipboard.
 #        py.exe mcb.pyw <keyword> - Loads keyword to clipboard.
-#        py.exe mcb.pyw keys - Lods all keywords to clipboard.
-#        py.exe mcb.pyw list - Lods entire object to clipboard.
+#        py.exe mcb.pyw keys - Loads all keywords to clipboard.
+#        py.exe mcb.pyw list - Loads entire object to clipboard.
 
 import shelve, pyperclip, sys
 
