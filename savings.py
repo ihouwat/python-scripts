@@ -126,7 +126,8 @@ try:
     print(f'{totalsSheet["A4"]} old value: {totalsSheet["B4"]}\n')
     addInterest()
     print(f'{totalsSheet["A4"]} new value: {totalsSheet["B4"]}\n')
-    
+
+  # Add an expense to the Expenses sheet
   elif(command == Args.EXPENSE.value):
     rows = [x for x in expensesSheet.getRows() if x[0]]
     categories = [x for x in totalsSheet.getColumn(1) if x][1:5]
@@ -144,6 +145,8 @@ try:
       else:
         # expensesSheet.getRow(expensesSheet[len(rows+1)])
         print(rows[0])
+        # Add expense to sheet
+        # Subtract expense from Totals sheet
         break
       
 except:
