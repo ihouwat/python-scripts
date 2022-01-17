@@ -138,7 +138,7 @@ try:
       dateEntered = pyip.inputDate(prompt=f"Enter the date of the expense in {dateFormat} format: ", formats=[dateFormat])
       formattedDate = str(dateEntered.strftime(dateFormat))
       note = pyip.inputStr("Enter notes to add to expense: ")
-      confirmation = pyip.inputYesNo(f"Confirm with Yes/No if you want to add:\n {item}\n cost: ${cost}\n category: {category}\n date: {formattedDate}\n notes: {note}\n")
+      confirmation = pyip.inputYesNo(f"Confirm with Yes/No if you want to add:\n Item: {item}\n Cost: ${cost}\n Category: {category}\n Date: {formattedDate}\n Note: {note}\n")
       if(confirmation == 'no'):
         print("You entered 'no'. Quitting the program.")
         break
