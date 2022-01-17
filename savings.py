@@ -43,6 +43,20 @@ def isCurrentMonth(d):
   inputMonth = getMonth(d)
   return todayMonth == inputMonth
 
+def monthsSinceLastUpdate(d):
+  monthDifferential = 0
+  formattedToday = splitDate(str(today.strftime(dateFormat)))
+  formattedLast = splitDate(d)
+  todayMonth, todayYear = int(formattedToday[0]), int(formattedToday[2])
+  formerMonth, lastYear = int(formattedLast[0]), int(formattedLast[2])
+  
+  if(todayYear > lastYear):
+    monthDifferential = 12 - formerMonth + todayMonth
+  elif(todayYear == lastYear):
+    monthDifferential = 2 - formerMonth
+  
+  return monthDifferential
+
 def splitDate(str):
   return str.split(delimiter)
 
