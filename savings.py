@@ -1,7 +1,15 @@
+# ! python
+# savings.py - Manipulates Monthly Savings GSheet.
+
+# Usage:
+        # savings month <integers OR floats> - to do monthly updates of categories
+        # savings envelope <integer OR float> - to update cash value in envelope
+        # savings interest <integer or float> - to add interest amount to Trips category
+        # savings exp - to enter an expense
+
 from datetime import date
 from enum import Enum
 from logging import exception
-from msilib.schema import Error
 import ezsheets, sys
 
 ss = ezsheets.Spreadsheet('1hW1zMXe943epeu1xdHhV-2H4IToKusYkFrp6N9Z5iyk')
@@ -86,7 +94,7 @@ try:
       print(f'New Total: {sheet["B6"]}')
       print(f'Total Deposited: {totalDeposits}')
       
-      # # update date
+      # update date
       sheet['B8'] = today.strftime(dateFormat)
   
   # Update envelope values
@@ -102,10 +110,11 @@ try:
       except:
         print('Include a second arg of type float')
 
+  # Add interest to Trips category
   elif(command == Args.INTEREST.value):
     print(f'{sheet["A4"]} old value: {sheet["B4"]}\n')
     addInterest()
-    print(f'{sheet["A4"]} new value: {sheet["B4"]}')
+    print(f'{sheet["A4"]} new value: {sheet["B4"]}\n')
 
 except:
   print(f'Enter a valid command:\n savings {Args.MONTH.value} <integers OR floats> - to do monthly updates of categories\n savings {Args.ENVELOPE.value} <integer OR float> - to update cash value in envelope\n savings {Args.INTEREST.value} <integer or float> - to add interest amount to Trips category\n savings {Args.EXPENSE.value} - to enter an expense')
