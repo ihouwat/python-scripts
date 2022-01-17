@@ -14,8 +14,9 @@ import ezsheets, sys
 import pyinputplus as pyip
 
 ss = ezsheets.Spreadsheet('1hW1zMXe943epeu1xdHhV-2H4IToKusYkFrp6N9Z5iyk')
-totalsSheet = ss[1]
-expensesSheet = ss[2]
+totalsSheet = ss[0]
+expensesSheet = ss[1]
+
 delimiter = '-'
 dateFormat = f'%m{delimiter}%d{delimiter}%Y'
 today = date.today()
@@ -91,19 +92,25 @@ try:
 
   # Update monthly values
   if(command == Args.MONTH.value):
-    lastMonth = totalsSheet['B8']
-    updatedThisMonth = isCurrentMonth(lastMonth)
+    dateUpdated = totalsSheet['B8']
 
-    if(updatedThisMonth):
+    if(isCurrentMonth(dateUpdated)):
       print(f'You already have updated monthly savings for {today.strftime("%B")}.')
     else:
+      numberOfMonths = monthsSinceLastUpdate(dateUpdated)
+      if(numberOfMonths > 1):
+        confirmation = pyip.inputYesNo(f'It has been {numberOfMonths} since your last update. Do you want to make the update?')
+        if(confirmation == 'no'):
+          sys.exit()
+      
       # update values for each category
-      for i in range(2,6):
-        row = [x for x in totalsSheet.getRow(i) if x]
-        category, oldValue, accumulator = row[0], row[1], row[2]
-        newValue = updateCategoryValue(oldValue, accumulator)
-        totalsSheet[f'B{i}'] = newValue
-        print(f'{category}:\n Old Value: {oldValue}\n Monthly Deposit: {accumulator}\n New Value: {"{:,}".format(newValue)}\n')
+      for j in range(numberOfMonths):
+        for i in range(2,6):
+          row = [x for x in totalsSheet.getRow(i) if x]
+          category, oldValue, accumulator = row[0], row[1], row[2]
+          newValue = updateCategoryValue(oldValue, accumulator)
+          totalsSheet[f'B{i}'] = newValue
+          print(f'{category}:\n Old Value: {oldValue}\n Monthly Deposit: {accumulator}\n New Value: {"{:,}".format(newValue)}\n')
       
       # add monthly interest to Trips value
       if(sys.argv[2:]):
