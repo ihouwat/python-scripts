@@ -134,13 +134,8 @@ try:
       print(f'New Total: {totalsSheet["B6"]}')
       print(f'Total Deposited: {totalDeposits}')
       
-      
-      
-      
-      
-      
       # update date
-      # sheet['B8'] = today.strftime(dateFormat)
+      totalsSheet['B8'] = today.strftime(dateFormat)
   
   # Update envelope values
   elif(command == Args.ENVELOPE.value):
