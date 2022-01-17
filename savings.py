@@ -3,6 +3,7 @@
 
 # Usage:
         # savings help - to view a list of available commands
+        # savings open - to open the spreadsheet in a browser
         # savings month <optional integers OR floats> - to do monthly updates of categories
         # savings envelope <integer OR float> - to update cash value in envelope
         # savings interest <optional integer or float> - to add interest amount to Trips category
@@ -13,8 +14,10 @@ from enum import Enum
 from logging import exception
 import ezsheets, sys
 import pyinputplus as pyip
+import webbrowser
 
-ss = ezsheets.Spreadsheet('1hW1zMXe943epeu1xdHhV-2H4IToKusYkFrp6N9Z5iyk')
+sheetID = '1hW1zMXe943epeu1xdHhV-2H4IToKusYkFrp6N9Z5iyk'
+ss = ezsheets.Spreadsheet(sheetID)
 totalsSheet = ss[0]
 expensesSheet = ss[1]
 
@@ -30,9 +33,11 @@ class Args(str, Enum):
   INTEREST = 'interest'
   EXPENSE = 'exp'
   HELP = 'help'
+  OPEN = 'open'
   
 availableCommands = (f"""\nEnter a valid command:
   savings {Args.HELP.value} - to view a list of available commands
+  savings {Args.OPEN.value} - to open the spreadsheet in a browser
   savings {Args.MONTH.value} <optional integers OR floats> - to do monthly updates of categories
   savings {Args.ENVELOPE.value} <integer OR float> - to update cash value in envelope
   savings {Args.INTEREST.value} <optional integer or float> - to add interest amount to Trips category
@@ -102,6 +107,10 @@ try:
   # List commands for user
   if(command == Args.HELP.value):
     print(availableCommands)
+    
+  # Open spreadsheet in the browser:
+  if(command == Args.OPEN.value):
+    webbrowser.open(f'https://docs.google.com/spreadsheets/d/{sheetID}/edit')
 
   # Update monthly values
   if(command == Args.MONTH.value):
