@@ -34,8 +34,11 @@ def isFloat(string):
     return True
   except ValueError:
     return False
+  
+def cellStringToFloat(num):
+  return float(str(num).replace(',',''))
 
-def checkCurrentMonth(d):
+def isCurrentMonth(d):
   todayMonth = getMonth(str(today.strftime(dateFormat)))
   inputMonth = getMonth(d)
   return todayMonth == inputMonth
@@ -49,7 +52,7 @@ def getMonth(str):
 def updateCategoryValue(val, acc):
   global totalDeposits
   totalDeposits += float(acc)
-  return float(str(val).replace(',','')) + float(acc)
+  return cellStringToFloat(val) + float(acc)
 
 # Check if you have at least two arguments, second argument is found in the Args enum, and all subsequent arguments are floats
 def validateArgs():
@@ -75,9 +78,8 @@ try:
   # Update monthly values
   if(command == Args.MONTH.value):
     lastMonth = totalsSheet['B8']
-    updatedThisMonth = checkCurrentMonth(lastMonth)
+    updatedThisMonth = isCurrentMonth(lastMonth)
 
-    # CHANGE THIS LATER
     if(updatedThisMonth):
       print(f'You already have updated monthly savings for {today.strftime("%B")}.')
     else:
@@ -113,7 +115,7 @@ try:
       if(len(sys.argv) == 2):
         raise exception
 
-      oldVal = float(str(totalsSheet["B9"]).replace(',',''))
+      oldVal = cellStringToFloat(totalsSheet["B9"])
       newVal = oldVal - float(sys.argv[2])
       print(f'Old envelope value: {oldVal}')
       totalsSheet["B9"] = newVal
@@ -131,24 +133,41 @@ try:
   elif(command == Args.EXPENSE.value):
     rows = [x for x in expensesSheet.getRows() if x[0]]
     categories = [x for x in totalsSheet.getColumn(1) if x][1:5]
+
+    # get user input
     while(True):
       item = pyip.inputStr("Enter item: ")
       cost = pyip.inputNum("Enter dollar value: ")
       category = pyip.inputMenu(categories, numbered=True)
       dateEntered = pyip.inputDate(prompt=f"Enter the date of the expense in {dateFormat} format: ", formats=[dateFormat])
-      formattedDate = str(dateEntered.strftime(dateFormat))
       note = pyip.inputStr("Enter notes to add to expense: ")
-      confirmation = pyip.inputYesNo(f"Confirm with Yes/No if you want to add:\n Item: {item}\n Cost: ${cost}\n Category: {category}\n Date: {formattedDate}\n Note: {note}\n")
+      confirmation = pyip.inputYesNo(f"Confirm with Yes/No if you want to add:\n Item: {item}\n Cost: ${cost}\n Category: {category}\n Date: {str(dateEntered.strftime(dateFormat))}\n Note: {note}\n")
+
       if(confirmation == 'no'):
         print("You entered 'no'. Quitting the program.")
         break
+
       else:
-        # expensesSheet.getRow(expensesSheet[len(rows+1)])
-        print(rows[0])
-        # Add expense to sheet
-        # Subtract expense from Totals sheet
+        categoryCell = f'B{categories.index(category)+2}'
+        oldVal = totalsSheet[categoryCell]
+        newVal = cellStringToFloat(totalsSheet[categoryCell]) - cost
+        try:
+          if(newVal < 0):
+            raise exception
+          else:
+            # Add expense to sheet
+            expensesSheet.updateRow(len(rows) + 1, [str(item), str(cost), str(dateEntered), str(category), str(note)])
+            # Subtract expense from Totals sheet
+            totalsSheet[categoryCell] = newVal
+            print(f'Category, {category} was successfully updated.\n Old value: {oldVal}\n New value: {newVal}')
+            updatedRows = [x for x in expensesSheet.getRows() if x[0]]
+            print('Updated Expenses spreadsheet:')
+            for i in updatedRows:
+              print(i[:5])
+        except:
+          print('The updated category can not be less than 0.')
         break
-      
+
 except:
   print(f"""\nEnter a valid command:
   savings {Args.MONTH.value} <optional integers OR floats> - to do monthly updates of categories
