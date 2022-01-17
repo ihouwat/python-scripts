@@ -28,6 +28,14 @@ class Args(str, Enum):
   ENVELOPE = 'envelope'
   INTEREST = 'interest'
   EXPENSE = 'exp'
+  HELP = 'help'
+  
+availableCommands = (f"""\nEnter a valid command:
+  savings {Args.HELP.value} - to view a list of available commands
+  savings {Args.MONTH.value} <optional integers OR floats> - to do monthly updates of categories
+  savings {Args.ENVELOPE.value} <integer OR float> - to update cash value in envelope
+  savings {Args.INTEREST.value} <optional integer or float> - to add interest amount to Trips category
+  savings {Args.EXPENSE.value} - to enter an expense""")
 
 def isFloat(string):
   try:
@@ -89,6 +97,10 @@ try:
   if(not validateArgs()):
     raise exception
   command = sys.argv[1]
+  
+  # List commands for user
+  if(command == Args.HELP.value):
+    print(availableCommands)
 
   # Update monthly values
   if(command == Args.MONTH.value):
@@ -190,8 +202,4 @@ try:
         break
 
 except:
-  print(f"""\nEnter a valid command:
-  savings {Args.MONTH.value} <optional integers OR floats> - to do monthly updates of categories
-  savings {Args.ENVELOPE.value} <integer OR float> - to update cash value in envelope
-  savings {Args.INTEREST.value} <optional integer or float> - to add interest amount to Trips category
-  savings {Args.EXPENSE.value} - to enter an expense""")
+  print('\nCould not complete the operation.', availableCommands)
