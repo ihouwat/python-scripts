@@ -52,9 +52,9 @@ def updateCategoryValue(val, acc):
 # Check if you have at least two arguments, second argument is found in the Args enum, and all subsequent arguments are floats
 def validateArgs():
   floats = []
-  for x in enumerate(row(sys.argv)[2:]):
+  for x in enumerate(list(sys.argv)[2:]):
     floats.append(isFloat(x[1]))
-  return len(sys.argv) > 1 and all(floats) and sys.argv[1] in row(Args)
+  return len(sys.argv) > 1 and all(floats) and sys.argv[1] in list(Args)
 
 def addInterest():
   totalInterest = 0
