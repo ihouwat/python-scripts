@@ -11,6 +11,7 @@ from datetime import date
 from enum import Enum
 from logging import exception
 import ezsheets, sys
+import pyinputplus as pyip
 
 ss = ezsheets.Spreadsheet('1hW1zMXe943epeu1xdHhV-2H4IToKusYkFrp6N9Z5iyk')
 sheet = ss[1]
@@ -124,7 +125,25 @@ try:
     print(f'{sheet["A4"]} old value: {sheet["B4"]}\n')
     addInterest()
     print(f'{sheet["A4"]} new value: {sheet["B4"]}\n')
-
+    
+  elif(command == Args.EXPENSE.value):
+    rows = [x for x in ss[2].getRows() if x[0]]
+    print(len(rows))
+    # categories = [x for x in sheet.getColumn(1) if x][1:5]
+    # while(True):
+    #   item = pyip.inputStr("Enter item: ")
+    #   cost = pyip.inputNum("Enter dollar value: ")
+    #   category = pyip.inputMenu(categories, numbered=True)
+    #   dateEntered = pyip.inputDate(prompt=f"Enter the date of the expense in {dateFormat} format: ", formats=[dateFormat])
+    #   formattedDate = str(dateEntered.strftime(dateFormat))
+    #   note = pyip.inputStr("Enter notes to add to expense: ")
+    #   confirmation = pyip.inputYesNo(f"Confirm with Yes/No if you want to add:\n {item}\n cost: ${cost}\n category: {category}\n date: {formattedDate}\n notes: {note}\n")
+    #   if(confirmation == 'no'):
+    #     print("You entered 'no'. Quitting the program.")
+    #     break
+    #   else:
+    #     print(sheet)
+      
 except:
   print(f"""\nEnter a valid command:
   savings {Args.MONTH.value} <optional integers OR floats> - to do monthly updates of categories
