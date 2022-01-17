@@ -14,7 +14,8 @@ import ezsheets, sys
 import pyinputplus as pyip
 
 ss = ezsheets.Spreadsheet('1hW1zMXe943epeu1xdHhV-2H4IToKusYkFrp6N9Z5iyk')
-sheet = ss[1]
+totalsSheet = ss[1]
+expensesSheet = ss[2]
 delimiter = '-'
 dateFormat = f'%m{delimiter}%d{delimiter}%Y'
 today = date.today()
@@ -61,8 +62,8 @@ def addInterest():
   totalInterest = 0
   for num in sys.argv[2:]:
     totalInterest += float(num)
-  sheet['B4'] = updateCategoryValue(sheet['B4'], totalInterest)
-  print(f'Added ${totalInterest} in interest to the {sheet["A4"]} category.\n')
+  totalsSheet['B4'] = updateCategoryValue(totalsSheet['B4'], totalInterest)
+  print(f'Added ${totalInterest} in interest to the {totalsSheet["A4"]} category.\n')
 
 
 # Program starts here
@@ -73,7 +74,7 @@ try:
 
   # Update monthly values
   if(command == Args.MONTH.value):
-    lastMonth = sheet['B8']
+    lastMonth = totalsSheet['B8']
     updatedThisMonth = checkCurrentMonth(lastMonth)
 
     # CHANGE THIS LATER
@@ -82,10 +83,10 @@ try:
     else:
       # update values for each category
       for i in range(2,6):
-        row = [x for x in sheet.getRow(i) if x]
+        row = [x for x in totalsSheet.getRow(i) if x]
         category, oldValue, accumulator = row[0], row[1], row[2]
         newValue = updateCategoryValue(oldValue, accumulator)
-        sheet[f'B{i}'] = newValue
+        totalsSheet[f'B{i}'] = newValue
         print(f'{category}:\n Old Value: {oldValue}\n Monthly Deposit: {accumulator}\n New Value: {"{:,}".format(newValue)}\n')
       
       # add monthly interest to Trips value
@@ -93,9 +94,9 @@ try:
         addInterest()
       
       # print totals
-      print(f'Old Total: {sheet["B6"]}')
-      sheet.refresh()
-      print(f'New Total: {sheet["B6"]}')
+      print(f'Old Total: {totalsSheet["B6"]}')
+      totalsSheet.refresh()
+      print(f'New Total: {totalsSheet["B6"]}')
       print(f'Total Deposited: {totalDeposits}')
       
       
@@ -112,37 +113,38 @@ try:
       if(len(sys.argv) == 2):
         raise exception
 
-      oldVal = float(str(sheet["B9"]).replace(',',''))
+      oldVal = float(str(totalsSheet["B9"]).replace(',',''))
       newVal = oldVal - float(sys.argv[2])
       print(f'Old envelope value: {oldVal}')
-      sheet["B9"] = newVal
-      print(f'New envelope value: {sheet["B9"]}')
+      totalsSheet["B9"] = newVal
+      print(f'New envelope value: {totalsSheet["B9"]}')
     except:
       print('Include a second arg of type float')
 
   # Add interest to Trips category
   elif(command == Args.INTEREST.value):
-    print(f'{sheet["A4"]} old value: {sheet["B4"]}\n')
+    print(f'{totalsSheet["A4"]} old value: {totalsSheet["B4"]}\n')
     addInterest()
-    print(f'{sheet["A4"]} new value: {sheet["B4"]}\n')
+    print(f'{totalsSheet["A4"]} new value: {totalsSheet["B4"]}\n')
     
   elif(command == Args.EXPENSE.value):
-    rows = [x for x in ss[2].getRows() if x[0]]
-    print(len(rows))
-    # categories = [x for x in sheet.getColumn(1) if x][1:5]
-    # while(True):
-    #   item = pyip.inputStr("Enter item: ")
-    #   cost = pyip.inputNum("Enter dollar value: ")
-    #   category = pyip.inputMenu(categories, numbered=True)
-    #   dateEntered = pyip.inputDate(prompt=f"Enter the date of the expense in {dateFormat} format: ", formats=[dateFormat])
-    #   formattedDate = str(dateEntered.strftime(dateFormat))
-    #   note = pyip.inputStr("Enter notes to add to expense: ")
-    #   confirmation = pyip.inputYesNo(f"Confirm with Yes/No if you want to add:\n {item}\n cost: ${cost}\n category: {category}\n date: {formattedDate}\n notes: {note}\n")
-    #   if(confirmation == 'no'):
-    #     print("You entered 'no'. Quitting the program.")
-    #     break
-    #   else:
-    #     print(sheet)
+    rows = [x for x in expensesSheet.getRows() if x[0]]
+    categories = [x for x in totalsSheet.getColumn(1) if x][1:5]
+    while(True):
+      item = pyip.inputStr("Enter item: ")
+      cost = pyip.inputNum("Enter dollar value: ")
+      category = pyip.inputMenu(categories, numbered=True)
+      dateEntered = pyip.inputDate(prompt=f"Enter the date of the expense in {dateFormat} format: ", formats=[dateFormat])
+      formattedDate = str(dateEntered.strftime(dateFormat))
+      note = pyip.inputStr("Enter notes to add to expense: ")
+      confirmation = pyip.inputYesNo(f"Confirm with Yes/No if you want to add:\n {item}\n cost: ${cost}\n category: {category}\n date: {formattedDate}\n notes: {note}\n")
+      if(confirmation == 'no'):
+        print("You entered 'no'. Quitting the program.")
+        break
+      else:
+        # expensesSheet.getRow(expensesSheet[len(rows+1)])
+        print(rows[0])
+        break
       
 except:
   print(f"""\nEnter a valid command:
