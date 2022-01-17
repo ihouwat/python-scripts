@@ -2,10 +2,11 @@
 # savings.py - Manipulates Monthly Savings GSheet.
 
 # Usage:
-        # savings month <integers OR floats> - to do monthly updates of categories
+        # savings help - to view a list of available commands
+        # savings month <optional integers OR floats> - to do monthly updates of categories
         # savings envelope <integer OR float> - to update cash value in envelope
-        # savings interest <integer or float> - to add interest amount to Trips category
-        # savings exp - to enter an expense
+        # savings interest <optional integer or float> - to add interest amount to Trips category
+        # savings exp - to enter an expense based on categories from Totals sheet
 
 from datetime import date
 from enum import Enum
@@ -35,7 +36,7 @@ availableCommands = (f"""\nEnter a valid command:
   savings {Args.MONTH.value} <optional integers OR floats> - to do monthly updates of categories
   savings {Args.ENVELOPE.value} <integer OR float> - to update cash value in envelope
   savings {Args.INTEREST.value} <optional integer or float> - to add interest amount to Trips category
-  savings {Args.EXPENSE.value} - to enter an expense""")
+  savings {Args.EXPENSE.value} - to enter an expense based on categories from Totals sheet""")
 
 def isFloat(string):
   try:
