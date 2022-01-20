@@ -63,12 +63,12 @@ def monthsSinceLastUpdate(d):
   formattedToday = splitDate(str(today.strftime(dateFormat)))
   formattedLast = splitDate(d)
   todayMonth, todayYear = int(formattedToday[0]), int(formattedToday[2])
-  formerMonth, lastYear = int(formattedLast[0]), int(formattedLast[2])
+  formerMonth, formerYear = int(formattedLast[0]), int(formattedLast[2])
   
-  if(todayYear > lastYear):
+  if(todayYear > formerYear):
     monthDifferential = 12 - formerMonth + todayMonth
-  elif(todayYear == lastYear):
-    monthDifferential = 2 - formerMonth
+  elif(todayYear == formerYear):
+    monthDifferential = todayMonth - formerMonth
   
   return monthDifferential
 
