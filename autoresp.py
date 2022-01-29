@@ -1,4 +1,5 @@
 # ! python3
+
 # mclip.py - A multi-clipboard program.
 
 TEXT = {'agree': """Sounds good to me.""",
