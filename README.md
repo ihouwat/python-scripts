@@ -1,6 +1,7 @@
 - autoresp.py: clipboard copier
+- dr.py: see value of dollar to real in browser
 - mcb.pyw: multi-clipboard copier and saver
 - map.py: open Google Maps using an address from command line or clipboard
-- dr.py: see value of dollar to real in browser
 - savings.py: multiple operations for monthly savings GSheet
   - savings-toast.ps1: windows toast message for when the savings.py script is run
+- scripts.py: prints script descriptions for all scripts in current directory 

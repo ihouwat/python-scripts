@@ -1,6 +1,6 @@
 # ! python 3
 
-# dr.py - Check dollar to real exchange rate 
+# dr.py - Check dollar to real exchange rate.
 
 import webbrowser
 
