@@ -171,7 +171,7 @@ try:
   # Add an expense to the Expenses sheet
   elif(command == Args.EXPENSE.value):
     rows = [x for x in expensesSheet.getRows() if x[0]]
-    categories = [x for x in totalsSheet.getColumn(1) if x][1:5]
+    categories = [x for x in totalsSheet.getColumn(1)][1:5]
 
     # get user input
     while(True):
