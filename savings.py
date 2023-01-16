@@ -10,12 +10,14 @@
         # savings interest <optional integer or float> - to add interest amount to Trips category
         # savings exp - to enter an expense based on categories from Totals sheet
 
+import sys
+import webbrowser
 from datetime import date
 from enum import Enum
 from logging import exception
-import ezsheets, sys
+
+import ezsheets
 import pyinputplus as pyip
-import webbrowser
 
 sheetID = '1hW1zMXe943epeu1xdHhV-2H4IToKusYkFrp6N9Z5iyk'
 ss = ezsheets.Spreadsheet(sheetID)
